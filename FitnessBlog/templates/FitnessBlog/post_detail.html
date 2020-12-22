@@ -1,0 +1,27 @@
+{% extends "FitnessBlog/base.html" %}
+{% block content %}
+
+    <article class="media post-segment">
+        <img class="rounded-circle post-image" src="{{ object.post_author.profile.image.url }}">
+        <div class="media-body">
+            <div class="post-info">
+                <a class="mr-2" href="{% url 'individual_posts' object.post_author.username %}">{{ object.post_author }}</a>
+                <small class="text-muted">{{ object.post_date|date:"F d Y" }}</small>
+                {% if object.post_author == user %}
+                    <div>
+                        <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'post-update' object.id %}">Update</a>
+                        <a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'post-delete' object.id %}">Delete</a>
+                    <form action = "{% url 'like_post' post.pk %}" method="POST">
+                    {% csrf_token %}
+                    <button type="submit", name="post_id", value="{{ post.id }}", class="btn btn-primary btn-sm">Like
+                    </button>  - {{ total_likes }} Likes
+                    </form>
+
+                    </div>
+                {% endif %}
+            </div>
+            <h2 class="post-title">{{ object.post_title }} </h2>
+            <p class="post-content">{{ object.post_content }}</p>
+        </div>
+    </article>
+{% endblock content %}
